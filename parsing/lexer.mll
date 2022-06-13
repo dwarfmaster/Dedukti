@@ -52,6 +52,8 @@ rule token = parse
   | ":="              { DEF           }
   | "|-"              { VDASH         }
   | "?"               { QUESTION      }
+  | "module"          { MODULE ( get_loc lexbuf ) }
+  | "with"            { WITH }
   | "_"               { UNDERSCORE ( get_loc lexbuf ) }
   | "Type"            { TYPE       ( get_loc lexbuf ) }
   | "def"             { KW_DEF     ( get_loc lexbuf ) }

@@ -18,6 +18,8 @@ exception Assert_error of loc
 
 (** Single source file entry. *)
 type entry =
+  (* Declaration of module *)
+  | Module of loc * ident * ((loc * ident) list)
   | Decl of loc * ident * Signature.scope * Signature.staticity * term
       (** Symbol declaration. *)
   | Def of loc * ident * Signature.scope * is_opaque * term option * term

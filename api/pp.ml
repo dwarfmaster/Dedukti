@@ -288,6 +288,9 @@ module Make (S : Sig) : Printer = struct
       | Signature.Private -> "private "
     in
     match e with
+    | Module (_, name, deps) ->
+      fprintf fmt "@[<mod> %a :@ %a @]@.@." pp_ident name
+        (pp_list "" (fun fmt pr -> pp_ident fmt (snd pr))) deps
     | Decl (_, id, scope, Static, ty) ->
         fprintf fmt "@[<2>%s%a :@ %a.@]@.@." (scope_to_string scope) print_ident
           id print_term ty

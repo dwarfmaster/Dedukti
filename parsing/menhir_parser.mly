@@ -59,6 +59,8 @@ let loc_of_rs = function
 %token RIGHTSQU
 %token VDASH
 %token QUESTION
+%token WITH
+%token <Kernel.Basic.loc> MODULE
 %token <Kernel.Basic.loc> PRAGMA_EVAL
 %token <Kernel.Basic.loc> PRAGMA_INFER
 %token <Kernel.Basic.loc> PRAGMA_CHECK
@@ -98,6 +100,8 @@ let loc_of_rs = function
 %%
 
 line:
+  | MODULE name=ID WITH deps=ID* DOT
+    {fun _ -> Module($1, snd name, deps) }
   | id=ID ps=param* COLON ty=term DOT
     {fun md -> Decl(fst id, snd id, Public, Static, scope_term md [] (mk_pi ty ps))}
   | KW_PRV id=ID ps=param* COLON ty=term DOT

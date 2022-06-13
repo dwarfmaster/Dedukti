@@ -30,6 +30,9 @@ type token =
   | EQUAL
   | ARROW
   | QUESTION
+  (* Modules *)
+  | MODULE of loc
+  | WITH
   (* New pragma system *)
   | PRAGMA_END of loc
   | PRAGMA_EVAL of loc

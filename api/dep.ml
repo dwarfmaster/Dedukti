@@ -146,6 +146,7 @@ let handle_entry e =
   let open Entry in
   let name_of_id id = Basic.mk_name !current_mod id in
   match e with
+  | Module (_, _, _) -> assert false
   | Decl (_, id, _, _, te) ->
       current_name := name_of_id id;
       mk_term te

@@ -15,6 +15,7 @@ type test = Convert  of typed_context * term * term
 exception Assert_error of loc
 
 type entry =
+  | Module of loc * ident * ((loc * ident) list)
   | Decl of loc * ident * Signature.scope * Signature.staticity * term
   | Def of loc * ident * Signature.scope * is_opaque * term option * term
   | Rules of loc * Rule.partially_typed_rule list
@@ -33,6 +34,9 @@ let pp_entry fmt e =
     | Signature.Private -> "private "
   in
   match e with
+  | Module (_, name, deps) ->
+    fprintf fmt "@[<mod> %a :@ %a @]@.@." pp_ident name
+      (pp_list "" (fun fmt pr -> pp_ident fmt (snd pr))) deps
   | Decl (_, id, scope, Static, ty) ->
       fprintf fmt "@[<2>%s%a :@ %a.@]@.@." (scope_to_string scope) pp_ident id
         pp_term ty
@@ -82,6 +86,7 @@ let pp_entry fmt e =
   | Require (_, md) -> fprintf fmt "#REQUIRE %a.@." pp_mident md
 
 let loc_of_entry = function
+  | Module (lc, _, _)
   | Decl (lc, _, _, _, _)
   | Def (lc, _, _, _, _, _)
   | Rules (lc, _)

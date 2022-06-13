@@ -21,6 +21,7 @@ module MakeTypeChecker (Env : CustomEnv) : S with type t = unit = struct
     let open Entry in
     let (module Pp : Pp.Printer) = Env.get_printer env in
     match e with
+    | Module (_, _, _) -> assert false
     | Decl (lc, id, scope, st, ty) ->
         Debug.(debug d_notice) "Declaration of constant '%a'." pp_ident id;
         Env.declare env lc id scope st ty
@@ -162,6 +163,7 @@ module MakeTopLevel (Env : CustomEnv) : S with type t = unit = struct
   let handle_entry env e =
     let open Entry in
     match e with
+    | Module (_, _, _) -> assert false
     | Decl (lc, id, scope, st, ty) ->
         Env.declare env lc id scope st ty;
         Format.printf "%a is declared.@." pp_ident id
